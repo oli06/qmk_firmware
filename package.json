@@ -9,7 +9,7 @@
   },
   "lint-staged": {
     "keyboards/planck/rev7/keymaps/myplanck/keymap.c": [
-        "qmk c2json -o myplanck_keymap.json ./keyboards/planck/rev7/keymaps/myplanck/keymap.c",
+        "qmk c2json -o myplanck_keymap.json",
         "git add myplanck_keymap.json"
     ]
   },
