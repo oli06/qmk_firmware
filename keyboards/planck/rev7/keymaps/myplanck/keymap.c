@@ -21,6 +21,7 @@ enum custom_keycodes {
     RIGHT_WINDOW,
 };
 
+
 bool detected_host_os_is_windows = false;
 
 //delete when backspace+shift is pressed
