@@ -4,10 +4,14 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "prepare": "husky"
+    "prepare": "husky",
+    "lint-staged": "lint-staged"
   },
   "lint-staged": {
-    "*.keymap.c": "qmk c2json -o myplank_keymap.json ./keyboards/planck/rev7/keymaps/myplanck/keymap.c"
+    "*.keymap.c": [
+        "qmk c2json -o myplank_keymap.json ./keyboards/planck/rev7/keymaps/myplanck/keymap.c",
+        "git add myplank_keymap.json"
+    ]
   },
   "keywords": [],
   "author": "",

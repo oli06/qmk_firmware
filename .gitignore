@@ -9,6 +9,7 @@
 *.orig
 *.rej
 
+node_modules
 # Build artifacts
 .clang_complete
 .build/
