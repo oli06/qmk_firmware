@@ -1,0 +1,19 @@
+{
+  "name": "qmk_firmware",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "prepare": "husky"
+  },
+  "lint-staged": {
+    "*.keymap.c": "qmk c2json -o myplank_keymap.json ./keyboards/planck/rev7/keymaps/myplanck/keymap.c"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "husky": "^9.1.7",
+    "lint-staged": "^16.2.6"
+  }
+}
