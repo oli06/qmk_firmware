@@ -12,12 +12,27 @@
 
 enum custom_keycodes {
     LAYER0 = SAFE_RANGE,
-    LAYER1,
-    LAYER2,
+    LAYER1, //number pad
+    LAYER2, //arrow keys --> move around layer
     CHANGE_KEYBOARD_LANGUAGE,
+    LEFT_WORD,
+    RIGHT_WORD,
+    LEFT_WINDOW,
+    RIGHT_WINDOW,
 };
 
 bool detected_host_os_is_windows = false;
+
+//delete when backspace+shift is pressed
+const key_override_t delete_key_override = ko_make_basic(MOD_MASK_SHIFT, KC_BSPC, KC_DEL);
+//volume up when vol down+shift is pressed
+const key_override_t volume_down_override = ko_make_basic(MOD_MASK_SHIFT, KC_VOLD, KC_VOLU);
+
+// All available key overrides
+const key_override_t *key_overrides[] = {
+	&delete_key_override,
+    &volume_down_override
+};
 
  const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
@@ -33,32 +48,85 @@ bool detected_host_os_is_windows = false;
  * `-----------------------------------------------------------------------------------'
  */
 [_LAYER0] = LAYOUT(
-    KC_ESC, KC_Q, KC_W, KC_E, KC_R, KC_T, KC_Z, KC_U, KC_I, KC_O, KC_P, KC_BSPC,
-    KC_TAB, KC_A, LT(0, KC_S), KC_D, KC_F, KC_G, KC_H, KC_J, KC_K, KC_L, KC_SCLN, KC_QUOT,
-    KC_LSFT, KC_Y, KC_X, KC_C, KC_V, KC_B, KC_N, KC_M, KC_COMM, KC_DOT, KC_SLSH, SC_SENT,
-    CHANGE_KEYBOARD_LANGUAGE, KC_LCTL, KC_LALT, KC_LGUI, KC_NO, KC_SPC, KC_SPC, TG(_LAYER1), KC_RGUI, KC_NO, KC_NO, KC_NO
+    KC_ESC, KC_Q, KC_W, KC_E, KC_R, KC_T, KC_Z, LT(0, KC_U), KC_I, LT(0, KC_O), KC_P, KC_BSPC,
+    KC_TAB, LT(0, KC_A), LT(0, KC_S), KC_D, KC_F, KC_G, KC_H, KC_J, KC_K, KC_L, KC_SCLN, KC_QUOT,
+    KC_LSFT, KC_Y, KC_X, KC_C, KC_V, KC_B, KC_N, KC_M, KC_COMM, KC_DOT, KC_SLSH, MT(MOD_RSFT, KC_ENT),
+    CHANGE_KEYBOARD_LANGUAGE, KC_LCTL, KC_LALT, KC_LGUI, TG(_LAYER2), KC_SPC, KC_SPC, TG(_LAYER1), KC_RGUI, KC_RALT, KC_RCTL, KC_NO
 ),
 
-[_LAYER1] = LAYOUT(KC_TAB, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_P7, KC_P8, KC_P9, KC_PSLS, KC_BSPC,
- KC_ESC, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_P4, KC_P5, KC_P6, KC_PAST, KC_PEQL,
- KC_LSFT, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_P1, KC_P2, KC_P3, KC_PMNS, KC_ENT,
- KC_TRNS, KC_LCTL, KC_LALT, KC_LGUI, TG(_LAYER1), KC_SPC, KC_SPC, TG(_LAYER2), KC_P0, KC_PDOT, KC_PPLS, KC_PCMM),
+[_LAYER1] = LAYOUT(
+    KC_TRNS,   KC_F7,   KC_F8,   KC_F9,       KC_NO,  KC_NO,  KC_NO,       KC_P7, KC_P8,   KC_P9, KC_PSLS, KC_TRNS,
+    KC_TAB,   KC_F4,   KC_F5,   KC_F6,       KC_NO,  KC_NO,  KC_NO,       KC_P4, KC_P5,   KC_P6, KC_PAST, KC_PEQL,
+    KC_LSFT,   KC_F1,   KC_F2,   KC_F3,       KC_NO,  KC_NO,  KC_NO,       KC_P1, KC_P2,   KC_P3, KC_PMNS,  KC_TRNS,
+    KC_TRNS, KC_LCTL, KC_LALT, KC_LGUI, TG(_LAYER1), KC_SPC, KC_SPC, TG(_LAYER2), KC_P0, KC_PDOT, KC_PPLS, KC_PCMM
+),
 
+/*
+ * Movement layer:
+ * home, page up, page down, end: move to the beginning, middle, end of the line
+ * hjkl: left, down, up, right
+ * bnm,: word_left, ___, ___, word_right
+ * left hand: asdf: mod-tap for asdf and: kc_lctl, KC_LALT / options, kc_lshift, KC_LGUI
+ */
 [_LAYER2] = LAYOUT(
-    KC_TAB, KC_C, KC_COMM, KC_DOT, KC_P, KC_Y, KC_F, KC_G, KC_C, KC_R, KC_L, KC_BSPC,
-    KC_ESC, KC_A, KC_O, KC_E, KC_U, KC_I, KC_D, KC_H, KC_T, KC_N, KC_S, KC_SLSH,
-    KC_LSFT, KC_SCLN, KC_Q, KC_J, KC_K, KC_X, KC_B, KC_M, KC_W, KC_V, KC_Z, KC_ENT,
-    KC_TRNS, KC_LCTL, KC_LALT, KC_LGUI, TG(_LAYER2), KC_SPC, KC_SPC, KC_NO, KC_LEFT, KC_DOWN, KC_UP, KC_RGHT),
+    KC_TRNS, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_HOME, KC_NO, KC_NO, KC_END, KC_NO, KC_TRNS,
+    KC_TAB, KC_NO, LEFT_WORD, MT(KC_LALT, KC_PAGE_UP), MT(KC_LSFT, KC_PAGE_DOWN), RIGHT_WORD, KC_LEFT, KC_DOWN, KC_UP, KC_RIGHT, KC_NO, KC_NO,
+    KC_LSFT, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_TRNS,
+    KC_TRNS, KC_LCTL, KC_LALT, KC_LGUI, TG(_LAYER2), KC_SPC, KC_SPC, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO),
 
 };
 
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
     switch (keycode) {
+        // case LEFT_WINDOW:
+        //     if (record->event.pressed) {
+        //         tap_code16(LCTL(KC_LEFT));
+        //     }
+        //     break;
+        // case RIGHT_WINDOW:
+        //     if (record->event.pressed) {
+        //         tap_code16(LCTL(KC_RIGHT));
+        //     }
+        //     break;
+        case LEFT_WORD: //jumps a word to the left
+            if (record->event.pressed) {
+                tap_code16(LALT(KC_LEFT));
+            }
+            break;
+        case RIGHT_WORD: //jumps a word to the right
+            if (record->event.pressed) {
+                tap_code16(LALT(KC_RIGHT));
+            }
+            break;
         case LT(0,KC_S): //sends s on tap and ß on hold
             if (record->tap.count && record->event.pressed) {
-                return true; // Return true for normal processing of tap keycode
+                return true;
             } else if (record->event.pressed) {
-                tap_code16(ALGR(KC_S)); // Intercept hold function to send SEMICOLON
+                tap_code16(RALT(KC_S)); // ALTG + S sends ß
+                return false;
+            }
+            break;
+        case LT(0, KC_A):
+            if (record->tap.count && record->event.pressed) {
+                return true;
+            } else if (record->event.pressed) {
+                tap_code16(RALT(KC_Q)); // ALTG + Q sends äÄ
+                return false;
+            }
+            break;
+        case LT(0, KC_O):
+            if (record->tap.count && record->event.pressed) {
+                return true;
+            } else if (record->event.pressed) {
+                tap_code16(RALT(KC_P)); // ALTG + P sends öÖ
+                return false;
+            }
+            break;
+        case LT(0, KC_U):
+            if (record->tap.count && record->event.pressed) {
+                return true;
+            } else if (record->event.pressed) {
+                tap_code16(RALT(KC_Y)); // ALTG + Y sends üÜ
                 return false;
             }
             break;
