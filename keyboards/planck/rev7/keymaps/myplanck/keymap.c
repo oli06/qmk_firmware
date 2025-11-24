@@ -45,10 +45,10 @@ const key_override_t *key_overrides[] = {
  * `-----------------------------------------------------------------------------------'
  */
 [_LAYER0] = LAYOUT(
-    KC_ESC, KC_Q, KC_W, KC_E, KC_R, KC_T, KC_Z, KC_U, KC_I, KC_O, KC_P, KC_BSPC,
-    KC_TAB, KC_A, LT(0, KC_S), KC_D, KC_F, KC_G, KC_H, KC_J, KC_K, KC_L, KC_SCLN, KC_QUOT,
-    KC_LSFT, KC_Y, KC_X, KC_C, KC_V, KC_B, KC_N, KC_M, KC_COMM, KC_DOT, KC_SLSH, MT(MOD_RSFT, KC_ENT),
-    CKBL, KC_LCTL, KC_LALT, KC_LGUI, MO(_LAYER2), KC_SPC, KC_SPC, TG(_LAYER1), KC_RGUI, KC_RALT, KC_RCTL, KC_NO
+    KC_ESC,     KC_Q,       KC_W,           KC_E,       KC_R,           KC_T, KC_Z, KC_U, KC_I, KC_O, KC_P, KC_BSPC,
+    KC_TAB,     KC_A,       LT(0, KC_S),    KC_D,       KC_F,           KC_G, KC_H, KC_J, KC_K, KC_L, KC_SCLN, KC_QUOT,
+    KC_LSFT,    KC_Y,       KC_X,           KC_C,       KC_V,           KC_B, KC_N, KC_M, KC_COMM, KC_DOT, KC_SLSH, MT(MOD_RSFT, KC_ENT),
+    CKBL,       KC_LCTL,    KC_LALT,        KC_LGUI,    MO(_LAYER2),    KC_SPC, KC_SPC, TG(_LAYER1), KC_RALT, KC_RCTL, KC_NO, KC_NO
 ),
 
 [_LAYER1] = LAYOUT(
@@ -60,15 +60,15 @@ const key_override_t *key_overrides[] = {
 
 /*
  * Movement layer:
- * home, page up, page down, end: move to the beginning, middle, end of the line
+ * home, page up, page down, end: move to the beginning / end of the line
  * hjkl: left, down, up, right
  * bnm,: , ___, ___,
  * left hand: asdf: mod-tap for asdf and: kc_lctl, KC_LALT / options, kc_lshift, KC_LGUI
  */
 [_LAYER2] = LAYOUT(
-    _______, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_HOME, KC_NO, KC_NO, KC_END, KC_NO, _______,
-    _______, KC_NO, KC_NO, MT(KC_LALT, KC_PAGE_UP), MT(KC_LSFT, KC_PAGE_DOWN), KC_NO, KC_LEFT, KC_DOWN, KC_UP, KC_RIGHT, KC_NO, KC_NO,
-    _______, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, _______,
+    _______, KC_NO, KC_NO, KC_NO,                       KC_NO, KC_NO, KC_HOME,  MT(KC_LSFT, KC_PAGE_DOWN),  KC_NO, KC_END, KC_NO, _______,
+    _______, KC_NO, KC_NO, MT(KC_LALT, KC_PAGE_DOWN),   KC_NO, KC_NO, KC_LEFT,  KC_DOWN,                    KC_UP, KC_RIGHT, KC_NO, KC_NO,
+    _______, KC_NO, KC_NO, KC_NO,                       KC_NO, KC_NO, KC_NO,    KC_NO,                      KC_NO, KC_NO, KC_NO, _______,
     _______, _______, _______, _______, _______, _______, _______, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO),
 
 };
