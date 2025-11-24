@@ -5,15 +5,16 @@
   "main": "index.js",
   "scripts": {
     "prepare": "husky",
-    "lint-staged": "lint-staged"
+    "lint-staged": "lint-staged",
+    "build": "qmk compile -kb planck/rev7 -km myplanck"
   },
   "lint-staged": {
     "keyboards/planck/rev7/keymaps/myplanck/keymap.c": [
         "qmk c2json -o myplanck_keymap.json",
         "git add myplanck_keymap.json"
     ]
-  },
-  "keywords": [],
+},
+"keywords": [],
   "author": "",
   "license": "ISC",
   "devDependencies": {
