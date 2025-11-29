@@ -26,15 +26,10 @@ const key_override_t delete_key_override = ko_make_basic(MOD_MASK_SHIFT, KC_BSPC
 //volume up when vol down+shift is pressed
 const key_override_t volume_down_override = ko_make_basic(MOD_MASK_SHIFT, KC_VOLD, KC_VOLU);
 
-const key_override_t ko_1_to_f1 = ko_make_basic(MOD_MASK_SHIFT, KC_1, KC_F1);
-const key_override_t ko_0_to_f12 = ko_make_basic(MOD_MASK_SHIFT, KC_0, KC_F12);
-
 // All available key overrides
 const key_override_t *key_overrides[] = {
 	&delete_key_override,
     &volume_down_override,
-    &ko_1_to_f1,
-    &ko_0_to_f12
 };
 
  const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
@@ -59,8 +54,8 @@ const key_override_t *key_overrides[] = {
 
 [_L1] = LAYOUT(
     _______,   KC_P1,   KC_P2,   KC_P3,       KC_P4,   KC_P5,   KC_P6,        KC_P7,   KC_P8,   KC_P9, KC_0,    _______,
-    _______, _______, _______, _______,       KC_NO,   KC_NO,   KC_NO,      _______,   KC_P5,   KC_P6, KC_PAST, KC_PEQL,
-    _______, _______, _______, _______,       KC_NO,   KC_NO,   KC_NO,      _______,   KC_P2,   KC_P3, KC_PMNS, _______,
+    _______, _______, _______, _______,       KC_NO,   KC_NO,   KC_NO,      _______,   _______,   _______, KC_PAST, KC_PEQL,
+    _______, _______, _______, _______,       KC_NO,   KC_NO,   KC_NO,      _______,   _______,   _______, KC_PMNS, _______,
     _______, _______, _______, _______, MO(_L1), _______, _______,  TG(_L2), _______, _______, _______, _______
 ),
 
