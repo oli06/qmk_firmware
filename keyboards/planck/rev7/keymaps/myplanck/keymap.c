@@ -6,9 +6,9 @@
 // #define TAPPING_TERM 175
 
 
-#define _LAYER0 0
-#define _LAYER1 1
-#define _LAYER2 2
+#define _L0 0
+#define _L1 1
+#define _L2 2
 
 
 enum custom_keycodes {
@@ -50,18 +50,18 @@ const key_override_t *key_overrides[] = {
  * | Brite| Ctrl | Alt  | GUI  |Lower |    Space    |Raise | Left | Down |  Up  |Right |
  * `-----------------------------------------------------------------------------------'
  */
-[_LAYER0] = LAYOUT(
+[_L0] = LAYOUT(
     KC_ESC,     KC_Q,       KC_W,           KC_E,       KC_R,           KC_T, KC_Z, KC_U, KC_I, KC_O, KC_P, KC_BSPC,
     KC_TAB,     KC_A,       KC_S,    KC_D,       KC_F,           KC_G, KC_H, KC_J, KC_K, KC_L, KC_SCLN, KC_QUOT,
     KC_LSFT,    KC_Y,       KC_X,           KC_C,       KC_V,           KC_B, KC_N, KC_M, KC_COMM, KC_DOT, KC_SLSH, MT(MOD_RSFT, KC_ENT),
-    AP_GLOB, KC_LCTL,    KC_LALT,        KC_LGUI,    MO(_LAYER2),    KC_SPC, KC_SPC, TG(_LAYER1), KC_RALT, KC_RCTL, KC_NO, KC_NO
+    AP_GLOB, KC_LCTL,    KC_LALT,        KC_LGUI,    MO(_L2),    KC_SPC, KC_SPC, TG(_L1), KC_RALT, KC_RCTL, KC_NO, KC_NO
 ),
 
-[_LAYER1] = LAYOUT(
+[_L1] = LAYOUT(
     _______,   KC_P1,   KC_P2,   KC_P3,       KC_P4,   KC_P5,   KC_P6,        KC_P7,   KC_P8,   KC_P9, KC_0,    _______,
     _______, _______, _______, _______,       KC_NO,   KC_NO,   KC_NO,      _______,   KC_P5,   KC_P6, KC_PAST, KC_PEQL,
     _______, _______, _______, _______,       KC_NO,   KC_NO,   KC_NO,      _______,   KC_P2,   KC_P3, KC_PMNS, _______,
-    _______, _______, _______, _______, MO(_LAYER1), _______, _______,  TG(_LAYER2), _______, _______, _______, _______
+    _______, _______, _______, _______, MO(_L1), _______, _______,  TG(_L2), _______, _______, _______, _______
 ),
 
 /*
@@ -71,7 +71,7 @@ const key_override_t *key_overrides[] = {
  * bnm,: , ___, ___,
  * left hand: asdf: mod-tap for asdf and: kc_lctl, KC_LALT / options, kc_lshift, KC_LGUI
  */
-[_LAYER2] = LAYOUT(
+[_L2] = LAYOUT(
     _______, KC_NO, KC_NO, KC_NO,                       KC_NO, KC_NO, KC_HOME,  MT(KC_LSFT, KC_PAGE_UP),  KC_NO, KC_END, KC_NO, _______,
     _______, KC_NO, KC_NO, MT(KC_LALT, KC_PAGE_DOWN),   KC_NO, KC_NO, KC_LEFT,  KC_DOWN,                    KC_UP, KC_RIGHT, KC_NO, KC_NO,
     _______, KC_NO, KC_NO, KC_NO,                       KC_NO, KC_NO, KC_NO,    KC_NO,                      KC_NO, KC_NO, KC_NO, _______,
