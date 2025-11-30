@@ -9,16 +9,18 @@
 #define _L0 0
 #define _L1 1
 #define _L2 2
+#define _LFN 3
 
 
 enum custom_keycodes {
     LAYER0 = SAFE_RANGE,
     LAYER1, //number pad
     LAYER2, //arrow keys --> move around layer
+    LAYER3,
     CKBL, //Change Keyboard Language
-    AP_GLOB,
+    // AP_GLOB,
+    // KC_GLOBE,
 };
-
 bool detected_host_os_is_windows = false;
 
 //delete when backspace+shift is pressed
@@ -49,14 +51,14 @@ const key_override_t *key_overrides[] = {
     KC_ESC,     KC_Q,       KC_W,           KC_E,       KC_R,           KC_T, KC_Z, KC_U, KC_I, KC_O, KC_P, KC_BSPC,
     KC_TAB,     KC_A,       KC_S,    KC_D,       KC_F,           KC_G, KC_H, KC_J, KC_K, KC_L, KC_SCLN, KC_QUOT,
     KC_LSFT,    KC_Y,       KC_X,           KC_C,       KC_V,           KC_B, KC_N, KC_M, KC_COMM, KC_DOT, KC_SLSH, MT(MOD_RSFT, KC_ENT),
-    AP_GLOB, KC_LCTL,    KC_LALT,        KC_LGUI,    MO(_L2),    KC_SPC, KC_SPC, TG(_L1), KC_RALT, KC_RCTL, KC_NO, KC_NO
+    MO(_LFN), KC_LCTL,    KC_LALT,        KC_LGUI,    MO(_L2),    KC_SPC, KC_SPC, MO(_L1), KC_RALT, KC_RCTL, KC_NO, KC_NO
 ),
 
 [_L1] = LAYOUT(
     _______,   KC_P1,   KC_P2,   KC_P3,       KC_P4,   KC_P5,   KC_P6,        KC_P7,   KC_P8,   KC_P9, KC_0,    _______,
     _______, _______, _______, _______,       KC_NO,   KC_NO,   KC_NO,      _______,   _______,   _______, KC_PAST, KC_PEQL,
     _______, _______, _______, _______,       KC_NO,   KC_NO,   KC_NO,      _______,   _______,   _______, KC_PMNS, _______,
-    _______, _______, _______, _______, MO(_L1), _______, _______,  TG(_L2), _______, _______, _______, _______
+    _______, _______, _______, _______, _______, _______, _______,  _______, _______, _______, _______, _______
 ),
 
 /*
@@ -70,17 +72,88 @@ const key_override_t *key_overrides[] = {
     _______, KC_NO, KC_NO, KC_NO,                       KC_NO, KC_NO, KC_HOME,  MT(KC_LSFT, KC_PAGE_UP),  KC_NO, KC_END, KC_NO, _______,
     _______, KC_NO, KC_NO, MT(KC_LALT, KC_PAGE_DOWN),   KC_NO, KC_NO, KC_LEFT,  KC_DOWN,                    KC_UP, KC_RIGHT, KC_NO, KC_NO,
     _______, KC_NO, KC_NO, KC_NO,                       KC_NO, KC_NO, KC_NO,    KC_NO,                      KC_NO, KC_NO, KC_NO, _______,
-    _______, _______, _______, _______, _______, _______, _______, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO),
+    _______, _______, _______, _______, _______, _______, _______, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO
+),
+
+
+[_LFN] = LAYOUT(
+    KC_F1,   KC_F2, KC_F3, KC_F4, KC_F5, KC_F6, KC_F7, KC_F8, KC_F9, KC_F10, KC_F11, KC_F12,
+    KC_NO,   KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO,  KC_NO,  KC_NO,  KC_NO,
+    KC_NO,   KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO,  KC_NO,  KC_NO,  KC_NO,
+    _______, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO,  KC_NO,  KC_NO,  KC_NO
+),
 
 };
 
+/**
+
+Vim editor shortcuts
+^ and $ are on the home row, for jumping to the start/end of current line.
+# and * are on the home row, to search behind/ahead for word under cursor.
+= is on the home row, to automatically indent current line or selection.
+, and ; are above the home block, for navigating between f/F/t/T jumps.
+( and ) are above the home block, for jumping to previous/next sentence.
+{ and } are on the home block, for jumping to previous/next paragraph.
+< and > are on the home block, for decreasing/increasing indentation.
+[ and ] are below the home block, for addressing previous/next things.
+? and / are stacked vertically, to search behind/ahead for regex pattern.
+% is on the thumb’s home key, for jumping to cursor’s matching delimiter.
+: is on the middle thumb key, for entering Vim’s command mode comfortably.
+:% is an inward swipe by the thumb, for a command across the whole buffer.
+@: is an inward swipe by the thumb, to repeat the most recent command line.
+
+Inward rolling bigrams
+() for parentheses.
+<> for angle brackets.
+[] for square brackets.
+{} for curly braces.
+(); for zero-arity function calls in C and related languages.
+); for function call statements in C and related languages.
+(" for starting a string value argument for a function call.
+[" for starting a string value for a list or hashtable lookup.
+=" for HTML attributes and Bourne shell variable assignments.
+.* for regular expressions.
+~/ for home directory paths in UNIX.
+<- for assignment in R and in Elixir’s with statements.
+-> for thin arrows in C, C++, and Elixir.
+=> for fat arrows in Perl, Ruby, and Elixir.
+!= for “not equal to” value comparison in many languages.
+<= for “less than or equal to” comparison in many languages.
+^= for bitwise XOR assignment in C and related languages.
+|> for the pipe operator in Elixir.
+!( for negating a group in Boolean expressions.
+"$ for quoted variable substitution in Bourne shell.
+!$ for last argument of previous command in Bourne shell.
+$? for exit status of previous command in Bourne shell.
+<% for directive tags in Ruby’s ERB and Elixir’s EEx templates.
+<? for directive tags in PHP templates.
+#{ for string interpolation in Ruby and Elixir.
+`' for legacy curly quotes.
+</ for element closing tags in XML and HTML.
+~> for pessimistic version constraint in SemVer.
+\. for literal period in regular expressions.
+~/ for home directory paths in UNIX.
+!? for interrobang in English prose.
+Outward rolling bigrams
+=~ for regular expression matching in Perl, Ruby, and Elixir.
+-= for negative accumulation in C and related languages.
++= for accumulation in C and many languages.
+%= for modulo assignment in C and related languages.
+>= for “greater than or equal to” value comparison.
+>& and &< for file descriptor redirection in Bourne shell.
+$_ for value of last argument of previous command in Bourne shell.
+$< for the first source of a rule in Makefile.
+$^ for all sources of a rule in Makefile.
+$@ for the target of a rule in Makefile.
+%> for directive tags in Ruby’s ERB and Elixir’s EEx templates.
+?> for directive tags in PHP templates.
+${ for variable interpolation in Bourne shell.
+%{ for maps (hash tables) in Elixir.
+?! for interrobang in English prose.
+ */
 
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
     switch (keycode) {
-        case AP_GLOB:
-            host_consumer_send(record->event.pressed ? AC_NEXT_KEYBOARD_LAYOUT_SELECT : 0);
-            return false;
-
         case LT(0,KC_S): //sends s on tap and ß on hold
             if (record->tap.count && record->event.pressed) {
                 return true;
