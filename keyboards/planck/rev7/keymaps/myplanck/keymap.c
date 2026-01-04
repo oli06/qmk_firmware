@@ -10,6 +10,7 @@
 #define _L1 1
 #define _L2 2
 #define _LFN 3
+#define VIM 4
 
 
 enum custom_keycodes {
@@ -19,19 +20,26 @@ enum custom_keycodes {
     LAYER3,
     CKBL, //Change Keyboard Language
     // AP_GLOB,
+    BLUB,
     // KC_GLOBE,
 };
 bool detected_host_os_is_windows = false;
+bool umlaut_key_held = false;
 
 //delete when backspace+shift is pressed
 const key_override_t delete_key_override = ko_make_basic(MOD_MASK_SHIFT, KC_BSPC, KC_DEL);
 //volume up when vol down+shift is pressed
 const key_override_t volume_down_override = ko_make_basic(MOD_MASK_SHIFT, KC_VOLD, KC_VOLU);
 
+// const key_override_t AT_when_q_alt = ko_make_basic(MOD_MASK_ALT, KC_Q, S(KC_2));
+
+// const key_override_t EUR_when_e_alt = ko_make_basic(MOD_MASK_ALT, KC_E, S(KC_2));
+
 // All available key overrides
 const key_override_t *key_overrides[] = {
 	&delete_key_override,
     &volume_down_override,
+    // &AT_when_q_alt,
 };
 
  const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
@@ -51,13 +59,21 @@ const key_override_t *key_overrides[] = {
     KC_ESC,     KC_Q,       KC_W,           KC_E,       KC_R,           KC_T, KC_Z, KC_U, KC_I, KC_O, KC_P, KC_BSPC,
     KC_TAB,     KC_A,       KC_S,    KC_D,       KC_F,           KC_G, KC_H, KC_J, KC_K, KC_L, KC_SCLN, KC_QUOT,
     KC_LSFT,    KC_Y,       KC_X,           KC_C,       KC_V,           KC_B, KC_N, KC_M, KC_COMM, KC_DOT, KC_SLSH, MT(MOD_RSFT, KC_ENT),
-    MO(_LFN), KC_LCTL,    KC_LALT,        KC_LGUI,    MO(_L2),    KC_SPC, KC_SPC, MO(_L1), KC_RALT, KC_RCTL, KC_NO, KC_NO
+    MO(_LFN), KC_LALT,    KC_LCTL,        KC_LGUI,    MO(_L2),    KC_SPC, KC_SPC, MO(VIM),  KC_RALT, KC_RCTL, CKBL, BLUB
 ),
 
 [_L1] = LAYOUT(
     _______,   KC_P1,   KC_P2,   KC_P3,       KC_P4,   KC_P5,   KC_P6,        KC_P7,   KC_P8,   KC_P9, KC_0,    _______,
-    _______, _______, _______, _______,       KC_NO,   KC_NO,   KC_NO,      _______,   _______,   _______, KC_PAST, KC_PEQL,
-    _______, _______, _______, _______,       KC_NO,   KC_NO,   KC_NO,      _______,   _______,   _______, KC_PMNS, _______,
+    _______, _______, _______, _______,       KC_NO,   KC_NO,   KC_NO,      _______,   _______,   _______, _______, _______,
+    _______, _______, _______, _______,       KC_NO,   KC_NO,   KC_NO,      _______,   _______,   _______, _______, _______,
+    _______, _______, _______, _______, _______, _______, _______,  _______, _______, _______, _______, _______
+),
+
+[VIM] = LAYOUT(
+    // _______,   KC_NO,   KC_NO,   KC_NO,  KC_NO,   KC_NO,   KC_NO,   KC_NO,   KC_NO,   KC_LBRC,   KC_RBRC,  _______,
+    _______,   KC_4,   KC_2,   KC_3,       KC_1,   KC_5,   KC_6,        KC_0,   KC_8,   KC_9, KC_7,    _______,
+    _______, S(KC_3), S(KC_6), _______,  S(KC_4),   S(KC_8), KC_NO,  _______, _______, S(KC_9), S(KC_0), _______,
+    _______, _______, _______, _______,  KC_NO,   KC_NO,   KC_NO,   _______, _______, S(KC_LBRC), S(KC_RBRC), _______,
     _______, _______, _______, _______, _______, _______, _______,  _______, _______, _______, _______, _______
 ),
 
@@ -154,14 +170,69 @@ ${ for variable interpolation in Bourne shell.
 
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
     switch (keycode) {
-        case LT(0,KC_S): //sends s on tap and ß on hold
-            if (record->tap.count && record->event.pressed) {
-                return true;
-            } else if (record->event.pressed) {
-                tap_code16(RALT(KC_S)); // ALTG + S sends ß
-                return false;
+        case KC_E:
+            if (record->event.pressed) {
+                if(get_mods() & (MOD_BIT(KC_RALT) | MOD_BIT(KC_LALT))) {
+                    tap_code16(S(KC_2));
+                    return false;
+                }
             }
             break;
+
+        case KC_Q:
+            if (record->event.pressed) {
+                if(get_mods() & (MOD_BIT(KC_RALT) | MOD_BIT(KC_LALT))) {
+                    uint8_t mods = get_mods();
+
+                    // Remove Alt (or RAlt / AltGr)
+                    del_mods(MOD_BIT(KC_LALT) | MOD_BIT(KC_RALT));
+
+                    tap_code16(S(KC_2));
+                    set_mods(mods);
+                    return false;
+                }
+            }
+            break;
+
+        case BLUB:
+            umlaut_key_held = record->event.pressed;
+            return false; // Don't send anything for this key
+
+        case KC_U:
+            if (record->event.pressed) {
+                if (umlaut_key_held) {
+                    tap_code16(A(KC_U));   // ⌥+U: macOS umlaut dead key
+                    tap_code(KC_U);        // then type U
+                    return false;
+                }
+            }
+            break;
+        case KC_A:
+            if (record->event.pressed) {
+                if (umlaut_key_held) {
+                    tap_code16(A(KC_U));   // ⌥+U: macOS umlaut dead key
+                    tap_code(KC_A);        // then type U
+                    return false;
+                }
+            }
+            break;
+        case KC_O:
+            if (record->event.pressed) {
+                if (umlaut_key_held) {
+                    tap_code16(A(KC_U));   // ⌥+U: macOS umlaut dead key
+                    tap_code(KC_O);        // then type U
+                    return false;
+                }
+            }
+            break;
+        // case LT(0,KC_S): //sends s on tap and ß on hold
+        //     if (record->tap.count && record->event.pressed) {
+        //         return true;
+        //     } else if (record->event.pressed) {
+        //         tap_code16(RALT(KC_S)); // ALTG + S sends ß
+        //         return false;
+        //     }
+        //     break;
         case CKBL:
             if (record->event.pressed) {
                 if (detected_host_os_is_windows) {
