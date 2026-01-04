@@ -59,7 +59,7 @@ const key_override_t *key_overrides[] = {
     KC_ESC,     KC_Q,       KC_W,           KC_E,       KC_R,           KC_T, KC_Z, KC_U, KC_I, KC_O, KC_P, KC_BSPC,
     KC_TAB,     KC_A,       KC_S,    KC_D,       KC_F,           KC_G, KC_H, KC_J, KC_K, KC_L, KC_SCLN, KC_QUOT,
     KC_LSFT,    KC_Y,       KC_X,           KC_C,       KC_V,           KC_B, KC_N, KC_M, KC_COMM, KC_DOT, KC_SLSH, MT(MOD_RSFT, KC_ENT),
-    MO(_LFN), KC_LALT,    KC_LCTL,        KC_LGUI,    MO(_L2),    KC_SPC, KC_SPC, MO(VIM),  KC_RALT, KC_RCTL, CKBL, BLUB
+    MO(_LFN), KC_LALT,    KC_LCTL,        KC_LGUI,    MO(_L2),    KC_SPC, KC_SPC, MO(VIM),  KC_RALT, QK_LLCK, CKBL, BLUB
 ),
 
 [_L1] = LAYOUT(
