@@ -7,18 +7,14 @@
 
 
 #define _L0 0
-#define _L1 1
 #define _L2 2
 #define _LFN 3
 #define VIM 4
+#define _LADJUST 5
 
 
 enum custom_keycodes {
-    LAYER0 = SAFE_RANGE,
-    LAYER1, //number pad
-    LAYER2, //arrow keys --> move around layer
-    LAYER3,
-    CKBL, //Change Keyboard Language
+    CKBL = SAFE_RANGE, //Change Keyboard Language
     // AP_GLOB,
     BLUB,
     // KC_GLOBE,
@@ -59,14 +55,7 @@ const key_override_t *key_overrides[] = {
     KC_ESC,     KC_Q,       KC_W,           KC_E,       KC_R,           KC_T, KC_Z, KC_U, KC_I, KC_O, KC_P, KC_BSPC,
     KC_TAB,     KC_A,       KC_S,    KC_D,       KC_F,           KC_G, KC_H, KC_J, KC_K, KC_L, KC_SCLN, KC_QUOT,
     KC_LSFT,    KC_Y,       KC_X,           KC_C,       KC_V,           KC_B, KC_N, KC_M, KC_COMM, KC_DOT, KC_SLSH, MT(MOD_RSFT, KC_ENT),
-    MO(_LFN), KC_LALT,    KC_LCTL,        KC_LGUI,    MO(_L2),    KC_SPC, KC_SPC, MO(VIM),  KC_RALT, QK_LLCK, CKBL, BLUB
-),
-
-[_L1] = LAYOUT(
-    _______,   KC_P1,   KC_P2,   KC_P3,       KC_P4,   KC_P5,   KC_P6,        KC_P7,   KC_P8,   KC_P9, KC_0,    _______,
-    _______, _______, _______, _______,       KC_NO,   KC_NO,   KC_NO,      _______,   _______,   _______, _______, _______,
-    _______, _______, _______, _______,       KC_NO,   KC_NO,   KC_NO,      _______,   _______,   _______, _______, _______,
-    _______, _______, _______, _______, _______, _______, _______,  _______, _______, _______, _______, _______
+    MO(_LFN), QK_LLCK,    KC_LCTL,        KC_LGUI,    MO(_L2),    KC_SPC, KC_SPC, MO(VIM),  KC_RALT, QK_LLCK, CKBL, BLUB
 ),
 
 [VIM] = LAYOUT(
@@ -88,7 +77,7 @@ const key_override_t *key_overrides[] = {
     _______, KC_NO, KC_NO, KC_NO,                       KC_NO, KC_NO, KC_HOME,  MT(KC_LSFT, KC_PAGE_UP),  KC_NO, KC_END, KC_NO, _______,
     _______, KC_NO, KC_NO, MT(KC_LALT, KC_PAGE_DOWN),   KC_NO, KC_NO, KC_LEFT,  KC_DOWN,                    KC_UP, KC_RIGHT, KC_NO, KC_NO,
     _______, KC_NO, KC_NO, KC_NO,                       KC_NO, KC_NO, KC_NO,    KC_NO,                      KC_NO, KC_NO, KC_NO, _______,
-    _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______,
+    _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______
 ),
 
 
@@ -96,9 +85,15 @@ const key_override_t *key_overrides[] = {
     KC_F1,   KC_F2, KC_F3, KC_F4, KC_F5, KC_F6, KC_F7, KC_F8, KC_F9, KC_F10, KC_F11, KC_F12,
     KC_NO,   KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO,  KC_NO,  KC_NO,  KC_NO,
     KC_NO,   KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO,  KC_NO,  KC_NO,  KC_NO,
-    _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______,
+    _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______
 ),
 
+[_LADJUST] = LAYOUT(
+    KC_NO, KC_L, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO,  KC_NO, KC_NO, KC_NO, KC_NO, KC_NO,
+    KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO,  KC_NO, KC_NO, KC_NO, KC_NO, KC_NO,
+    KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO,  KC_NO, KC_NO, KC_NO, KC_NO, KC_NO,
+    _______, _______, _______, _______, _______, _______, _______,  _______, _______, _______, _______, _______
+),
 };
 
 /**
@@ -245,6 +240,11 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
     }
     return true;
 };
+
+layer_state_t layer_state_set_user(layer_state_t state) {
+    return update_tri_layer_state(state, _L2, VIM, _LADJUST);
+}
+
 
 //detect host os and switch
 bool process_detected_host_os_kb(os_variant_t detected_os) {

@@ -48,3 +48,10 @@
 // #define PLANCK_ENCODER_SETTLE_PIN_STATE_DELAY 20
 // #define ENCODER_MAP_KEY_DELAY 10
 // #define ENCODER_RESOLUTION 4
+
+
+//################ MY STUFF ################
+
+#define TRI_LAYER_LOWER_LAYER 2 //enables _L2 layer
+#define TRI_LAYER_UPPER_LAYER 4 //enables VIM layer
+#define TRI_LAYER_ADJUST_LAYER 5 //enables third layer (layer adjust)
