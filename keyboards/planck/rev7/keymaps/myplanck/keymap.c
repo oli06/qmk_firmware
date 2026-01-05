@@ -17,6 +17,7 @@ enum custom_keycodes {
     CKBL = SAFE_RANGE, //Change Keyboard Language
     // AP_GLOB,
     BLUB,
+    STAR_AND_BACKSLASH,
     // KC_GLOBE,
 };
 bool detected_host_os_is_windows = false;
@@ -30,12 +31,13 @@ const key_override_t volume_down_override = ko_make_basic(MOD_MASK_SHIFT, KC_VOL
 // const key_override_t AT_when_q_alt = ko_make_basic(MOD_MASK_ALT, KC_Q, S(KC_2));
 
 // const key_override_t EUR_when_e_alt = ko_make_basic(MOD_MASK_ALT, KC_E, S(KC_2));
+const key_override_t backtick_when_single_tick_and_shift = ko_make_basic(MOD_MASK_SHIFT, KC_QUOT, KC_GRAVE);
 
 // All available key overrides
 const key_override_t *key_overrides[] = {
 	&delete_key_override,
     &volume_down_override,
-    // &AT_when_q_alt,
+    &backtick_when_single_tick_and_shift,
 };
 
  const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
@@ -59,10 +61,9 @@ const key_override_t *key_overrides[] = {
 ),
 
 [VIM] = LAYOUT(
-    // _______,   KC_NO,   KC_NO,   KC_NO,  KC_NO,   KC_NO,   KC_NO,   KC_NO,   KC_NO,   KC_LBRC,   KC_RBRC,  _______,
     _______,   KC_4,   KC_2,   KC_3,       KC_1,   KC_5,   KC_6,        KC_0,   KC_8,   KC_9, KC_7,    _______,
-    _______, S(KC_3), S(KC_6), _______,  S(KC_4),   S(KC_8), KC_NO,  _______, _______, S(KC_9), S(KC_0), _______,
-    _______, _______, _______, _______,  KC_NO,   KC_NO,   KC_NO,   _______, _______, S(KC_LBRC), S(KC_RBRC), _______,
+    _______, S(KC_3), S(KC_6), S(KC_5),  S(KC_4),   STAR_AND_BACKSLASH, KC_LBRC, KC_RBRC,  S(KC_9), S(KC_0), _______, _______,
+    _______, S(KC_NONUS_HASH), KC_MINS, S(KC_EQUAL),  KC_EQUAL,   S(KC_QUOT),   S(KC_MINS), S(KC_1), _______, _______, _______, _______,
     _______, _______, _______, _______, _______, _______, _______,  _______, _______, _______, _______, _______
 ),
 
@@ -165,6 +166,22 @@ ${ for variable interpolation in Bourne shell.
 
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
     switch (keycode) {
+        case STAR_AND_BACKSLASH:
+            if (record->event.pressed) {
+                if(get_mods() & (MOD_BIT(KC_LSFT) | MOD_BIT(KC_RSFT))) {
+                    uint8_t mods = get_mods();
+
+                    // Remove Alt (or RAlt / AltGr)
+                    del_mods(MOD_BIT(KC_LSFT) | MOD_BIT(KC_RSFT));
+                    tap_code(KC_BACKSLASH);
+                    set_mods(mods);
+
+                    return false;
+                } else {
+                    tap_code16(S(KC_8));
+                }
+            }
+            break;
         case KC_E:
             if (record->event.pressed) {
                 if(get_mods() & (MOD_BIT(KC_RALT) | MOD_BIT(KC_LALT))) {
