@@ -97,73 +97,6 @@ const key_override_t *key_overrides[] = {
 ),
 };
 
-/**
-
-Vim editor shortcuts
-^ and $ are on the home row, for jumping to the start/end of current line.
-# and * are on the home row, to search behind/ahead for word under cursor.
-= is on the home row, to automatically indent current line or selection.
-, and ; are above the home block, for navigating between f/F/t/T jumps.
-( and ) are above the home block, for jumping to previous/next sentence.
-{ and } are on the home block, for jumping to previous/next paragraph.
-< and > are on the home block, for decreasing/increasing indentation.
-[ and ] are below the home block, for addressing previous/next things.
-? and / are stacked vertically, to search behind/ahead for regex pattern.
-% is on the thumb’s home key, for jumping to cursor’s matching delimiter.
-: is on the middle thumb key, for entering Vim’s command mode comfortably.
-:% is an inward swipe by the thumb, for a command across the whole buffer.
-@: is an inward swipe by the thumb, to repeat the most recent command line.
-
-Inward rolling bigrams
-() for parentheses.
-<> for angle brackets.
-[] for square brackets.
-{} for curly braces.
-(); for zero-arity function calls in C and related languages.
-); for function call statements in C and related languages.
-(" for starting a string value argument for a function call.
-[" for starting a string value for a list or hashtable lookup.
-=" for HTML attributes and Bourne shell variable assignments.
-.* for regular expressions.
-~/ for home directory paths in UNIX.
-<- for assignment in R and in Elixir’s with statements.
--> for thin arrows in C, C++, and Elixir.
-=> for fat arrows in Perl, Ruby, and Elixir.
-!= for “not equal to” value comparison in many languages.
-<= for “less than or equal to” comparison in many languages.
-^= for bitwise XOR assignment in C and related languages.
-|> for the pipe operator in Elixir.
-!( for negating a group in Boolean expressions.
-"$ for quoted variable substitution in Bourne shell.
-!$ for last argument of previous command in Bourne shell.
-$? for exit status of previous command in Bourne shell.
-<% for directive tags in Ruby’s ERB and Elixir’s EEx templates.
-<? for directive tags in PHP templates.
-#{ for string interpolation in Ruby and Elixir.
-`' for legacy curly quotes.
-</ for element closing tags in XML and HTML.
-~> for pessimistic version constraint in SemVer.
-\. for literal period in regular expressions.
-~/ for home directory paths in UNIX.
-!? for interrobang in English prose.
-Outward rolling bigrams
-=~ for regular expression matching in Perl, Ruby, and Elixir.
--= for negative accumulation in C and related languages.
-+= for accumulation in C and many languages.
-%= for modulo assignment in C and related languages.
->= for “greater than or equal to” value comparison.
->& and &< for file descriptor redirection in Bourne shell.
-$_ for value of last argument of previous command in Bourne shell.
-$< for the first source of a rule in Makefile.
-$^ for all sources of a rule in Makefile.
-$@ for the target of a rule in Makefile.
-%> for directive tags in Ruby’s ERB and Elixir’s EEx templates.
-?> for directive tags in PHP templates.
-${ for variable interpolation in Bourne shell.
-%{ for maps (hash tables) in Elixir.
-?! for interrobang in English prose.
- */
-
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
     switch (keycode) {
         case STAR_AND_BACKSLASH:
@@ -171,7 +104,6 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
                 if(get_mods() & (MOD_BIT(KC_LSFT) | MOD_BIT(KC_RSFT))) {
                     uint8_t mods = get_mods();
 
-                    // Remove Alt (or RAlt / AltGr)
                     del_mods(MOD_BIT(KC_LSFT) | MOD_BIT(KC_RSFT));
                     tap_code(KC_BACKSLASH);
                     set_mods(mods);
