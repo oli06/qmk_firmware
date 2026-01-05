@@ -18,6 +18,7 @@ enum custom_keycodes {
     // AP_GLOB,
     BLUB,
     STAR_AND_BACKSLASH,
+    MINUS_PLUS,
     // KC_GLOBE,
 };
 bool detected_host_os_is_windows = false;
@@ -37,7 +38,7 @@ const key_override_t backtick_when_single_tick_and_shift = ko_make_basic(MOD_MAS
 const key_override_t *key_overrides[] = {
 	&delete_key_override,
     &volume_down_override,
-    &backtick_when_single_tick_and_shift,
+    // &backtick_when_single_tick_and_shift,
 };
 
  const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
@@ -62,8 +63,8 @@ const key_override_t *key_overrides[] = {
 
 [VIM] = LAYOUT(
     _______,   KC_4,   KC_2,   KC_3,       KC_1,   KC_5,   KC_6,        KC_0,   KC_8,   KC_9, KC_7,    _______,
-    _______, S(KC_3), S(KC_6), S(KC_5),  S(KC_4),   STAR_AND_BACKSLASH, KC_LBRC, KC_RBRC,  S(KC_9), S(KC_0), _______, _______,
-    _______, S(KC_NONUS_HASH), KC_MINS, S(KC_EQUAL),  KC_EQUAL,   S(KC_QUOT),   S(KC_MINS), S(KC_1), _______, _______, _______, _______,
+    _______, S(KC_3), S(KC_6), S(KC_5),  S(KC_4), STAR_AND_BACKSLASH, MINUS_PLUS,  S(KC_9), S(KC_0), KC_LBRC, KC_RBRC, KC_GRAVE,
+    _______, S(KC_GRAVE), S(KC_BACKSLASH), S(KC_1),  KC_EQUAL, S(KC_7), S(KC_MINS), S(KC_2), _______, _______, _______, _______,
     _______, _______, _______, _______, _______, _______, _______,  _______, _______, _______, _______, _______
 ),
 
@@ -99,6 +100,19 @@ const key_override_t *key_overrides[] = {
 
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
     switch (keycode) {
+        case MINUS_PLUS:
+            if (record->event.pressed) {
+                if(get_mods() & (MOD_BIT(KC_LSFT) | MOD_BIT(KC_RSFT))) {
+                    //shift + kc_equal is +
+                    tap_code(KC_EQUAL);
+
+                    return false;
+                } else {
+                    tap_code(KC_MINUS);
+                    return false;
+                }
+            }
+            break;
         case STAR_AND_BACKSLASH:
             if (record->event.pressed) {
                 if(get_mods() & (MOD_BIT(KC_LSFT) | MOD_BIT(KC_RSFT))) {
@@ -111,6 +125,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
                     return false;
                 } else {
                     tap_code16(S(KC_8));
+                    return false;
                 }
             }
             break;
