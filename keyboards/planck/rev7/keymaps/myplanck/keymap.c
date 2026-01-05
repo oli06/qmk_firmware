@@ -16,7 +16,7 @@
 enum custom_keycodes {
     CKBL = SAFE_RANGE, //Change Keyboard Language
     // AP_GLOB,
-    BLUB,
+    UMLAUTE_MAC_KEY,
     STAR_AND_BACKSLASH,
     MINUS_PLUS,
     // KC_GLOBE,
@@ -28,17 +28,12 @@ bool umlaut_key_held = false;
 const key_override_t delete_key_override = ko_make_basic(MOD_MASK_SHIFT, KC_BSPC, KC_DEL);
 //volume up when vol down+shift is pressed
 const key_override_t volume_down_override = ko_make_basic(MOD_MASK_SHIFT, KC_VOLD, KC_VOLU);
-
-// const key_override_t AT_when_q_alt = ko_make_basic(MOD_MASK_ALT, KC_Q, S(KC_2));
-
-// const key_override_t EUR_when_e_alt = ko_make_basic(MOD_MASK_ALT, KC_E, S(KC_2));
 const key_override_t backtick_when_single_tick_and_shift = ko_make_basic(MOD_MASK_SHIFT, KC_QUOT, KC_GRAVE);
 
 // All available key overrides
 const key_override_t *key_overrides[] = {
 	&delete_key_override,
     &volume_down_override,
-    // &backtick_when_single_tick_and_shift,
 };
 
  const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
@@ -58,7 +53,7 @@ const key_override_t *key_overrides[] = {
     KC_ESC,     KC_Q,       KC_W,           KC_E,       KC_R,           KC_T, KC_Z, KC_U, KC_I, KC_O, KC_P, KC_BSPC,
     KC_TAB,     KC_A,       KC_S,    KC_D,       KC_F,           KC_G, KC_H, KC_J, KC_K, KC_L, KC_SCLN, KC_QUOT,
     KC_LSFT,    KC_Y,       KC_X,           KC_C,       KC_V,           KC_B, KC_N, KC_M, KC_COMM, KC_DOT, KC_SLSH, MT(MOD_RSFT, KC_ENT),
-    MO(_LFN), QK_LLCK,    KC_LCTL,        KC_LGUI,    MO(_L2),    KC_SPC, KC_SPC, MO(VIM),  KC_RALT, QK_LLCK, CKBL, BLUB
+    MO(_LFN), QK_LLCK,    KC_LCTL,        KC_LGUI,    MO(_L2),    KC_SPC, KC_SPC, MO(VIM),  KC_RALT, QK_LLCK, CKBL, UMLAUTE_MAC_KEY
 ),
 
 [VIM] = LAYOUT(
@@ -153,7 +148,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
             }
             break;
 
-        case BLUB:
+        case UMLAUTE_MAC_KEY:
             umlaut_key_held = record->event.pressed;
             return false; // Don't send anything for this key
 
@@ -184,16 +179,9 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
                 }
             }
             break;
-        // case LT(0,KC_S): //sends s on tap and ß on hold
-        //     if (record->tap.count && record->event.pressed) {
-        //         return true;
-        //     } else if (record->event.pressed) {
-        //         tap_code16(RALT(KC_S)); // ALTG + S sends ß
-        //         return false;
-        //     }
-        //     break;
         case CKBL:
             if (record->event.pressed) {
+                //toggle keyboard language on windows/mac
                 if (detected_host_os_is_windows) {
                     tap_code16(LGUI(KC_SPC));
                 } else {
