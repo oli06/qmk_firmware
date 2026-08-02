@@ -95,6 +95,25 @@ const key_override_t *key_overrides[] = {
 
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
     switch (keycode) {
+        // case MAC_GUI:
+        //     if(record->event.pressed) {
+        //         if(detected_host_os_is_windows) {
+        //             tap_code(KC_LCTL);
+        //         } else {
+        //             tap_code(KC_LGUI);
+        //         }
+
+        //         return false;
+        //     }
+        // case MAC_LCTRL:
+        //     if(record->event.pressed) {
+        //         if(detected_host_os_is_windows) {
+        //             tap_code(KC_LGUI);
+        //         } else {
+        //             tap_code(KC_LCTL);
+        //         }
+        //         return false;
+        //     }
         case MINUS_PLUS:
             if (record->event.pressed) {
                 if(get_mods() & (MOD_BIT(KC_LSFT) | MOD_BIT(KC_RSFT))) {
@@ -211,6 +230,9 @@ bool process_detected_host_os_kb(os_variant_t detected_os) {
             detected_host_os_is_windows = false;
             break;
     }
+
+    extern keymap_config_t keymap_config;
+    keymap_config.swap_lctl_lgui = detected_host_os_is_windows;
 
     return true;
 }
